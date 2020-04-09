@@ -33,6 +33,7 @@
 %Tiles worth 1 or 2 only need to be looped thru once and solution can be
 %adjusted afterwards
 %1 and 2 tiles deleted except A and D. Set with A = 10 sets, D = 2 sets
+%Required Loops: 7,980
 
 %Final processing time: 0.575 seconds
 %Solution = 138
