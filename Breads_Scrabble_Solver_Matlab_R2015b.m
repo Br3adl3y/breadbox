@@ -6,7 +6,7 @@
 
 %Optimization 1: 
 %Sets cannot reach 46 without the 4 highest tiles: J X Q Z
-%Last four tiles are fixed to J X Q Z.
+%Last four tiles are fixed to J X Q Z. Puzzle can be 10 points/3 tiles.
 %Required Loops: 857,280
 
 %Optimization 2: 
@@ -29,24 +29,28 @@
 %Duplicates of score 2 tiles removed
 %Required Loops: 26,970
 
-%Final processing time: 2.074 seconds
+%Optimization 6:
+%Tiles worth 1 or 2 only need to be looped thru once and solution can be
+%adjusted afterwards
+%1 and 2 tiles deleted except A and D. Set with A = 10 sets, D = 2 sets
+
+%Final processing time: 0.575 seconds
 %Solution = 138
 
-tiles = {'A'  1; 'E'  1; 'I'  1; 'O'  1; 'U'  1; 'L'  1; 'N'  1; 'S'  1; 'T'  1; 'R'  1; ...
-         'D'  2; 'G'  2; 'B'  3; 'B'  3; 'C'  3; 'C'  3; 'M'  3; 'M'  3; 'P'  3; 'P'  3; ...
+tiles = {'A'  1; 'D'  2; 'B'  3; 'B'  3; 'C'  3; 'C'  3; 'M'  3; 'M'  3; 'P'  3; 'P'  3; ...
          'F'  4; 'F'  4; 'H'  4; 'H'  4; 'V'  4; 'V'  4; 'W'  4; 'W'  4; 'Y'  4; 'Y'  4; ...
-         'K'  5; 'J'  8; 'X'  8; 'Q' 10; 'Z' 10};
+         'K'  5};
 hands = cell.empty; %Storage array
-for i = 1:29 %Loop thru 1st tile
-    for j = i+1:30 %Loop thru 2nd tile
-        for k = j+1:31 %Loop thru 3rd tile
-            hand = strjoin(tiles([i j k 32 33 34 35], 1)',''); %Assemble set
-            score = sum(cell2mat(tiles([i j k 32 33 34 35], 2))); %Evalute score
-            if score == 46
-                hands = [hands hand]; %Store when score = 46
+for i = 1:19 %Loop thru 1st tile
+    for j = i+1:20 %Loop thru 2nd tile
+        for k = j+1:21 %Loop thru 3rd tile
+            hand = strjoin(tiles([i j k], 1)',''); %Assemble set
+            score = sum(cell2mat(tiles([i j k], 2))); %Evalute score
+            if score == 10
+                hands = [hands hand]; %Store when score = 10
             end
         end
     end
 end
-hands = unique(hands) %Discard Duplicates
-solution = length(hands) %Get number of sets
+hands = unique(hands); %Discard Duplicates
+solution = length(hands) + sum(cell2mat(strfind(hands, 'A')))*9 + sum(cell2mat(strfind(hands, 'D'))) %Get number of sets
